@@ -1,0 +1,47 @@
+{
+  "name": "joao-pessoa-a-dois",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "dev": "concurrently -k \"tsx watch server/index.ts\" \"vite --host localhost\"",
+    "build": "tsc --noEmit && vite build",
+    "start": "tsx server/index.ts",
+    "account": "tsx server/account.ts",
+    "account:setup": "node scripts/configure-account.mjs",
+    "backup": "tsx server/backup.ts",
+    "restore": "tsx server/restore.ts",
+    "test": "tsx --test tests/*.test.ts",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@fastify/cookie": "^11.1.3",
+    "@fastify/rate-limit": "^11.2.1",
+    "@fastify/static": "^10.1.6",
+    "argon2": "^0.45.1",
+    "dexie": "^4.4.6",
+    "dotenv": "^18.0.8",
+    "fastify": "^5.12.7",
+    "lucide-react": "^1.57.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "tsx": "^4.23.15",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "concurrently": "^10.0.6",
+    "fake-indexeddb": "^6.2.5",
+    "sharp": "^0.35.5",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4",
+    "vite-plugin-pwa": "^2.0.0"
+  }
+}

@@ -1,0 +1,41 @@
+name: app-viagem
+services:
+  app:
+    build: .
+    image: app-viagem:local
+    restart: unless-stopped
+    init: true
+    environment:
+      APP_ORIGIN: https://${APP_HOST:?Defina APP_HOST no arquivo .env ao lado deste compose.yaml (ex. APP_HOST=viagem.exemplo.com)}
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 3001
+      DATA_DIR: /data
+      BACKUP_DIR: /data/backups
+    ports:
+      - "127.0.0.1:3107:3001"
+    volumes:
+      - travel-data:/data
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: app-viagem_default
+      traefik.http.routers.app-viagem.rule: Host(`${APP_HOST}`)
+      traefik.http.routers.app-viagem.entrypoints: websecure
+      traefik.http.routers.app-viagem.tls: "true"
+      traefik.http.routers.app-viagem.tls.certresolver: letsencrypt
+      traefik.http.routers.app-viagem.service: app-viagem
+      traefik.http.services.app-viagem.loadbalancer.server.port: "3001"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+volumes:
+  travel-data:
+networks:
+  default:
+    name: app-viagem_default
